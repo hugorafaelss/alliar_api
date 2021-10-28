@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_27_222838) do
+ActiveRecord::Schema.define(version: 2021_10_28_141614) do
 
   create_table "exames", force: :cascade do |t|
     t.string "nome"
@@ -23,6 +23,7 @@ ActiveRecord::Schema.define(version: 2021_10_27_222838) do
   create_table "exames_laboratorios", id: false, force: :cascade do |t|
     t.integer "exame_id", null: false
     t.integer "laboratorio_id", null: false
+    t.index ["exame_id", "laboratorio_id"], name: "index_exames_laboratorios_on_exame_id_and_laboratorio_id", unique: true
   end
 
   create_table "laboratorios", force: :cascade do |t|

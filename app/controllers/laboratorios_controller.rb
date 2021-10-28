@@ -1,3 +1,4 @@
+ActionController::Parameters.action_on_unpermitted_parameters = :raise
 class LaboratoriosController < ApplicationController
   before_action :set_laboratorio, only: [:show, :update, :destroy]
 

@@ -40,32 +40,42 @@ class ExamesController < ApplicationController
     @exame.destroy
   end
 
-  # POST /exames/:id/associar
+  # POST /associar
   def associar
-    _exame = Exame.find(params[:id])
-    _laboratorio = Laboratorio.find(params[:laboratorio_id])
-    if _laboratorio.ativo?
-        _exame.laboratorios << _laboratorio
-        _exame.save
-        render status: :no_content
-    else
+    _exame = Exame.find(params[:id_exame])
+    _laboratorio = Laboratorio.find(params[:id_laboratorio])
+    unless _laboratorio.ativo?
         render json: {error: "O laboratorio está inativo"}, status: :unprocessable_entity
+        return
     end
+    unless _exame.ativo?
+        render json: {error: "O exame está inativo"}, status: :unprocessable_entity
+        return
+    end
+    _exame.laboratorios << _laboratorio
+    _exame.save
+    render status: :no_content
+    
+   
   end
 
-  # POST /exames/:id/desassociar
+  # POST /desassociar
   def desassociar
-    _exame = Exame.find(params[:id])
-    _laboratorio = Laboratorio.find(params[:laboratorio_id])
-    if _laboratorio.ativo?
-        _exame.laboratorios.delete(_laboratorio)
-        # _laboratorio.exames.delete(_exame) # Mesma coisa
-        # _laboratorio.save
-        _exame.save
-        render status: :no_content
-    else
+    _exame = Exame.find(params[:id_exame])
+    _laboratorio = Laboratorio.find(params[:id_laboratorio])
+    unless _laboratorio.ativo?
         render json: {error: "O laboratorio está inativo"}, status: :unprocessable_entity
+        return
     end
+    unless _exame.ativo?
+        render json: {error: "O exame está inativo"}, status: :unprocessable_entity
+        return
+    end
+    _exame.laboratorios.delete(_laboratorio)
+    _exame.save
+    # _laboratorio.exames.delete(_exame) # Mesma coisa
+    # _laboratorio.save
+    render status: :no_content
   end
 
   private
